@@ -11,10 +11,16 @@ export default class Board extends React.Component {
         );
     }
 
-    renderRow(rowNum) {
+    renderRows() {
         let rows = [];
-        for (let i = rowNum * 3; i < (rowNum * 3) + 3; i++) {
-            rows.push(this.renderSquare(i));
+        let index = 0;
+        for (let i = 0; i < 3; i ++) {
+            let squares = [];
+            for (let j = 0; j < 3; j++) {
+                squares.push(this.renderSquare(index));
+                index++;
+            }
+            rows.push(<div className="board-row">{squares}</div>)
         }
         return rows;
     }
@@ -22,15 +28,7 @@ export default class Board extends React.Component {
     render() {
         return (
         <div>
-            <div className="board-row">
-            {this.renderRow(0)}
-            </div>
-            <div className="board-row">
-            {this.renderRow(1)}
-            </div>
-            <div className="board-row">
-            {this.renderRow(2)}
-            </div>
+            {this.renderRows()}
         </div>
         );
     }
