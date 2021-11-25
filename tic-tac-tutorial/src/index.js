@@ -53,7 +53,8 @@ class Game extends React.Component {
             history: [{
                 squares: Array(9).fill(null)
             }],
-            xIsNext: true
+            xIsNext: true,
+            steps: 0
         };
     }
 
@@ -61,26 +62,59 @@ class Game extends React.Component {
         const history = this.state.history;
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-        //return so we dont overwrite a square
+
+        // early return if game is won or if square is taken
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
+
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
             history: history.concat([{
               squares: squares,
             }]),
             xIsNext: !this.state.xIsNext,
+            step: this.state.steps + 1
           });
+    }
+
+    jumpTo(i) {
+        if (i === this.state.history.length - 1) {
+            return;
+        }
+        const history = this.state.history.slice(0, (this.state.history.length - i - 1) * -1);
+        const step = i;
+        const xIsNext = i % 2 === 0;
+        this.setState({
+            history: history,
+            step: step,
+            xIsNext: xIsNext
+        });
     }
 
     render() {
         const history = this.state.history;
         const current = history[history.length - 1];
-        let winner = calculateWinner(current.squares);
-        const status = winner === null ? 
+        const winner = calculateWinner(current.squares);
+
+        // set game message 
+        let status = winner === null ? 
             'Next player: ' + (this.state.xIsNext ? 'X' : 'O') :
             'The winner is: ' + winner;
+        if(checkComplete(current.squares) && winner == null) {
+            status = 'Tie game... Try again!';
+        }
+
+        const moves = history.map((step, move) => {
+            const desc = move ? 
+                'Go to move #' + move :
+                'Go to start';
+            return (
+                <li key={move}>
+                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                </li>
+            );
+        });
 
         return (
         <div className="game">
@@ -92,7 +126,7 @@ class Game extends React.Component {
             </div>
             <div className="game-info">
             <div>{status}</div>
-            <ol>{/* TODO */}</ol>
+            <ol>{moves}</ol>
             </div>
         </div>
         );
@@ -117,7 +151,16 @@ function calculateWinner(squares) {
       }
     }
     return null;
-  }
+}
+
+function checkComplete(squares) {
+    for (let i = 0; i < squares.length; i++) {
+        if (squares[i] === null) {
+            return false;
+        }
+    }
+    return true;
+}
 
 // ========================================
 
