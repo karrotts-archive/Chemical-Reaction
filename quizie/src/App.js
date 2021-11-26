@@ -9,13 +9,45 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quiz: GenerateQuiz()
+      quiz: GenerateQuiz(),
+      currentQuestion: 0,
     }
+  }
+
+  renderHeader(currentQuestionNumber) {
+    let header = [];
+
+    if (currentQuestionNumber > 0) {
+      header.push(
+        <button onClick={() =>
+          this.setState({currentQuestion: currentQuestionNumber - 1})
+        }
+        >
+        Previous
+        </button>
+      );
+    }
+
+    header.push(<p>Question #{currentQuestionNumber + 1} of {this.state.quiz.items.length}</p>)
+
+    if (currentQuestionNumber < this.state.quiz.items.length - 1) {
+      header.push(<button onClick={() => 
+        this.setState({currentQuestion: currentQuestionNumber + 1})
+        }
+      >
+      Next
+      </button>
+      )
+    }
+    return header;
   }
 
   render() {
     return (
-      <QuizItemComponent item={this.state.quiz.items[0]} />
+      <div>
+        {this.renderHeader(this.state.currentQuestion)}
+        <QuizItemComponent item={this.state.quiz.items[this.state.currentQuestion]} />
+      </div>
     )
   }
 }

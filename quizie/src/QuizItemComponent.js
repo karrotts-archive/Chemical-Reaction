@@ -8,7 +8,7 @@ export default class QuizItemComponent extends React.Component {
     renderOptions(options) {
         const listedOptions = []
         for(let i = 0; i < options.length; i++) {
-            listedOptions.push(<button key={i}>{options[i]}</button>)
+            listedOptions.push(<li key={i}><input value={i} name="answers" type="radio" /> {options[i]}</li>)
         }
         return listedOptions;
     }
@@ -17,9 +17,10 @@ export default class QuizItemComponent extends React.Component {
         return (
             <div>
                 <h1>{this.props.item.question}</h1>
-                <ul>
+                <form>
                     {this.renderOptions(this.props.item.answers)}
-                </ul>
+                </form>
+                <button>Next Question</button>
             </div>
         );
     }
