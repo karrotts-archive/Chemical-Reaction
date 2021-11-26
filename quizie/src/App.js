@@ -20,9 +20,11 @@ export default class App extends React.Component {
     if (currentQuestionNumber > 0) {
       header.push(
         <div className="col-md-3 justify-content-center justify-content-md-between">
-          <button onClick={() =>
-          this.setState({currentQuestion: currentQuestionNumber - 1})
-            }
+          <button 
+          onClick={() =>
+            this.setState({currentQuestion: currentQuestionNumber - 1})
+          }
+          className="btn btn-outline-primary"
           >
           Previous
           </button>
@@ -44,10 +46,12 @@ export default class App extends React.Component {
     if (currentQuestionNumber < this.state.quiz.items.length - 1) {
       header.push(
       <div className="col-md-3 justify-content-center justify-content-md-between">
-        <button onClick={() => 
-          this.setState({currentQuestion: currentQuestionNumber + 1})
+        <button 
+          onClick={() => 
+            this.setState({currentQuestion: currentQuestionNumber + 1})
           }
-        style={{float: 'right'}}
+          className="btn btn-outline-primary"
+          style={{float: 'right'}}
         >
         Next
         </button>
@@ -59,13 +63,19 @@ export default class App extends React.Component {
     return header;
   }
 
+  handleNextButton() {
+    if (this.state.currentQuestion < this.state.quiz.items.length - 1) {
+      this.setState({currentQuestion: this.state.currentQuestion + 1});
+    }
+  }
+
   render() {
     return (
       <div className="container">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
           {this.renderHeader(this.state.currentQuestion)}
         </div>
-        <QuizItemComponent item={this.state.quiz.items[this.state.currentQuestion]} />
+        <QuizItemComponent item={this.state.quiz.items[this.state.currentQuestion]} nextHandler={() => this.handleNextButton()} />
       </div>
     )
   }

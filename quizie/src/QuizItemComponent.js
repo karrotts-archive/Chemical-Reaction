@@ -1,10 +1,6 @@
 import React from "react";
 
 export default class QuizItemComponent extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     renderOptions(options) {
         const listedOptions = []
         for(let i = 0; i < options.length; i++) {
@@ -20,7 +16,7 @@ export default class QuizItemComponent extends React.Component {
                 <form>
                     {this.renderOptions(this.props.item.answers)}
                 </form>
-                <button>Next Question</button>
+                <button className="btn btn-primary" onClick={this.props.nextHandler}>Next Question</button>
             </div>
         );
     }
