@@ -4,7 +4,18 @@ export default class QuizItemComponent extends React.Component {
     renderOptions(options) {
         const listedOptions = []
         for(let i = 0; i < options.length; i++) {
-            listedOptions.push(<li key={i}><input value={i} name="answers" type="radio" /> {options[i]}</li>)
+            listedOptions.push(
+                <li key={i}>
+                    <input 
+                        value={i} 
+                        name="answers" 
+                        type="radio"
+                        checked={i === this.props.item.chosenAnswer}
+                        onChange={() => this.props.optionChangeHandler(i)}
+                    /> 
+                    {options[i]}
+                </li>
+            )
         }
         return listedOptions;
     }
@@ -16,7 +27,12 @@ export default class QuizItemComponent extends React.Component {
                 <form>
                     {this.renderOptions(this.props.item.answers)}
                 </form>
-                <button className="btn btn-primary" onClick={this.props.nextHandler}>Next Question</button>
+                <button 
+                    className="btn btn-primary" 
+                    onClick={this.props.nextHandler}
+                >
+                    Next Question
+                </button>
             </div>
         );
     }
