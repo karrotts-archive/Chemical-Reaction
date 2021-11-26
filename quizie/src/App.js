@@ -2,6 +2,7 @@ import React from 'react';
 import Quiz from './models/quiz';
 import QuizItem from './models/quizItem';
 import QuizItemComponent from './QuizItemComponent';
+import QuizData from './questions.json';
 import './App.css';
 
 export default class App extends React.Component {
@@ -15,7 +16,6 @@ export default class App extends React.Component {
 
 	renderHeader(currentQuestionNumber) {
 		let header = [];
-
 		if (currentQuestionNumber > 0) {
 			header.push(
 				<div className="col-md-3 justify-content-center justify-content-md-between">
@@ -65,6 +65,17 @@ export default class App extends React.Component {
 	handleNextButton() {
 		if (this.state.currentQuestion < this.state.quiz.items.length - 1) {
 			this.setState({currentQuestion: this.state.currentQuestion + 1});
+		} else {
+			// temp grading system, should be replaced with a different rendered component at some point
+			const totalItems = this.state.quiz.items.length;
+			let correctItems = 0;
+			const score = () => ((correctItems / totalItems) * 100) + "%";
+			for (let i = 0; i < totalItems; i++) {
+				if (this.state.quiz.items[i].chosenAnswer === this.state.quiz.items[i].correctAnswer) {
+					correctItems++;
+				}
+			}
+			alert(score());
 		}
 	}
 
@@ -85,44 +96,28 @@ export default class App extends React.Component {
 					nextHandler={() => this.handleNextButton()}
 					optionChangeHandler={(value) => this.optionChange(this.state.currentQuestion, value)}
 				/>
+				<br />
+				<button 
+                    className={this.state.currentQuestion === this.state.quiz.items.length - 1 ? "btn btn-success" : "btn btn-primary"} 
+                    onClick={() => this.handleNextButton()}
+                >
+                    {this.state.currentQuestion === this.state.quiz.items.length - 1 ? "Submit" : "Next Question"}
+                </button>
 			</div>
 		)
 	}
 }
 
-//temp function to generate a quiz
 function GenerateQuiz() {
-	const q1 = new QuizItem(
-		"What is 2+2?",
-		[
-			"A math question",
-			"Addition",
-			"4",
-			"All of the Above"
-		],
-		3
-	)
-	const q2 = new QuizItem(
-		"What is the meaning of life?",
-		[
-			"Abstract math",
-			"42",
-			"The girl next door",
-			"Pokemon Trading Cards"
-		],
-		1
-	);
-	const q3 = new QuizItem(
-		"How many apples are in this tree?",
-		[
-			"What tree?",
-			"5",
-			"69",
-			"Steve Jobs was right"
-		],
-		0
-	);
+	let items = [];
+	for (let i = 0; i < QuizData.questions.length; i++) {
+		items.push(new QuizItem(
+			QuizData.questions[i].question,
+			QuizData.questions[i].answers,
+			QuizData.questions[i].correctAnswer
+		));
+	}
 	const quiz = new Quiz();
-	quiz.items.push(q1, q2, q3);
+	quiz.items = items;
 	return quiz;
 }

@@ -27,12 +27,6 @@ export default class QuizItemComponent extends React.Component {
                 <form>
                     {this.renderOptions(this.props.item.answers)}
                 </form>
-                <button 
-                    className="btn btn-primary" 
-                    onClick={this.props.nextHandler}
-                >
-                    Next Question
-                </button>
             </div>
         );
     }
