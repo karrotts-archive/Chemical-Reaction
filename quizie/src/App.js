@@ -75,7 +75,8 @@ export default class App extends React.Component {
 					correctItems++;
 				}
 			}
-			alert(score());
+			alert("Results: " + correctItems + " / " + totalItems +
+			"\nTotal Score: " + score());
 		}
 	}
 
@@ -98,11 +99,11 @@ export default class App extends React.Component {
 				/>
 				<br />
 				<button 
-                    className={this.state.currentQuestion === this.state.quiz.items.length - 1 ? "btn btn-success" : "btn btn-primary"} 
-                    onClick={() => this.handleNextButton()}
-                >
-                    {this.state.currentQuestion === this.state.quiz.items.length - 1 ? "Submit" : "Next Question"}
-                </button>
+					className={this.state.currentQuestion === this.state.quiz.items.length - 1 ? "btn btn-success" : "btn btn-primary"} 
+					onClick={() => this.handleNextButton()}
+				>
+					{this.state.currentQuestion === this.state.quiz.items.length - 1 ? "Submit" : "Next Question"}
+				</button>
 			</div>
 		)
 	}
