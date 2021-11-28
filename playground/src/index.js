@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Counter from './counter';
+import Todo from './todo';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
     <Counter />
+    <Todo />
   </React.StrictMode>,
   document.getElementById('root')
 );
